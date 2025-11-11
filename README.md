@@ -65,6 +65,8 @@ The wiring diagram:
 
 ![Wiring diagram](./docs/wiring.drawio.svg)
 
+We utilize here 3 pins form ESP32-C3-mini. We use pin number `6` as `not-enabled` pin in the driver. With this one we controll if the stepper motor driver enrgizes the actual clock motor. Pin number `7` is used as `step` pin, controlling the sequence of steps. We use this one to actually make a clock tick-tack. Last, the pin number `8` is not connected enywhere outside the ESP32-C3 but it is internally wired on the board to the blue LED. We use that one to indicate the status of online time-synchronization.
+
 While ESP32 is connected through USB to a computer you can spare the 5V regulator, useful for testing and development. Regulator is only needed to power the microcontroller board 5V while not connected to a computer. We use 3.3V from the ESP32 to power the stepper motor driver as well as for all logical "1" in the board connections.
 
 This is how it looked on my breadboard:
@@ -93,12 +95,14 @@ Perhaps it is not my finest piece of computer code, as this is DIY project inten
 
 ### Agorithm
 
+We initialize the clock with numbers of pin used for `not_enabled_pin`, `step_pin` and `led_pin`.
+
 - When the clock starts it reads last known position of the hands (as minutes from 12:00) from the `configuration.json` file
-- Before the first time display, and then every hour, it calls HTTP service for the current time to set up the internal RTC
+- Before the first time display, and then every hour, it calls HTTP service for the current time to set up the internal RTC. This first switches the indicator LED off. If the time sycnrhonization was successfull it will turn the LED on again. Therefor LED bascially shows the status of last time synchronization.
 - Next it sets the display time to the current time in a loop, with sleep function scheduling next tick to beginning of the next minute (somewhere around 1 second of the each minute, I dont have OCD, good enough)
 - When it displays a time it performs `minute_ticks` in a loop until `current_display_time == target_display_time`
-- Each tick is a 2 iterations of switching the `STEP` of the motor driver `on` -> `off`, effectively making 2 steps (as above, it makes a switch of polarization for each minute)
-- At each tick the new `current_display_time` value is being saved persistently in `configuration.json` file.
+- Each tick: we enable the stepper motor driver, then we do 2 iterations of switching the `STEP` of the motor driver `on` -> `off`, effectively making 2 steps (as above, it makes a switch of polarization for each minute). Finally we disable the stepper motor, just to avoid unnecessairy heating of the room.
+- At each tick the new `current_display_time` value is being saved persistently in `configuration.json` file
 
 Nothing fancy, but simple and effective.
 
