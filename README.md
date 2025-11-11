@@ -30,9 +30,9 @@ And then in the operating state it would switch between the bolow states:
 
 (The pictures after wikipedia (attribution to Cyril BUTTAY), read more on [Wikipedia](https://en.wikipedia.org/wiki/H-bridge))
 
-Problem with real world electronic H-bridges is that they are simple in theory. Theoretically you can achieve that circuit with just 4 transistors (google it). And if you can go with NPN / PNP transistors, that is almost it. But then when you go higher voltages or, especially, higher currents you probably gonna end up with MOSFET n-/p-channels and will realize you also need a considerably good charge pump to bump up the voltage above the threashold level. Also please imagine what would happen if you would turn to many switches on the pictures above ON in the same time. It basically leads to shorting a transistor, and they do actully turn red for a second before exploding. Lets just say those circuits tends to get quite complicated.
+Problem with real world electronic H-bridges is that they are simple in theory. Theoretically you can achieve that circuit with just 4 transistors (google it). And if you can go with NPN / PNP transistors, that is almost it. But then when you go higher voltages or, especially, higher currents you probably gonna end up with MOSFET n-/p-channels and will realize you also need a considerably good charge pump to bump up the voltage above the threashold level to be able to use n-channel only. Imagine also what would happen if you would turn to many switches in the pictures above ON at the same time. It basically leads to shorting a transistor, and they do explode. So you need something to prevent "toxic input combinations" even for as short time as booting of your microcontroler. We are also working here with a big coil as a load. That is a lot of impedance, you need to properly secure the circuit from currents inducted in the coil, in other words, a lot of diodes. Lets just say those circuits tends to get quite complicated.
 
-It is not possible to make H-bridge from scrutch, of course, but it is a challanging project in itself if you want something you can trust.
+It is not impossible to make H-bridge from scrutch, of course, but it is a challanging project in itself.
 
 ### Stepper motor driver
 
