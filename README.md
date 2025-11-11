@@ -6,9 +6,9 @@ Old trainstation clock revival using modern stepper motor driver (A4988 / DRV882
 
 ![The Clock](./docs/clock.jpg)
 
-I have came across the old train station clock in flee market and bought it at very reasonable price (100 PLN ~ 25 EUR). After fixing the small problem with the clock escapement mechanism it was ready to work and only needed some master clock signal to drive it.
+I have came across the old train station clock on the flea market and bought it at very reasonable price (100 PLN ~ 25 EUR). After fixing the small problem with the clock escapement mechanism it was ready to work and only needed some master clock signal to drive it.
 
-The clock mechanism is a very simple two steps stepping motor with escapement to prevent backward movement. To drive it you need to provide it with (in my clock case) aletrnating 24V DC current, chinging polarization every minute (in other word, each time you switch polarization to the clock coil, it makes a move by 1 minute).
+The clock mechanism is a very simple two steps stepping motor with escapement to prevent backward movement. To drive it you need to provide it with aletrnating 24V (in my case) DC current, chinging polarization every minute (in other word, each time you switch polarization to the clock coil, it makes a move by 1 minute).
 
 ![Alternating current on coil leads](docs/alternating.png)
 
@@ -83,9 +83,9 @@ And then I have made it into the "final" prototyping board realization, using a 
 
 ## Software
 
-I have decided to go with Micropython becouse of portability, easiness of implementation and becouse I didnt need to make the clock Real-Time Application (which is funny thing to say about a clock, to be honest).
+I have decided to go with Micropython becouse of portability, easiness of implementation and becouse I didn't need to make the clock Real-Time Application (which is funny thing to say about a clock, to be honest).
 
-Perhaps it is not my finest piece of computer code, as this is DIY project intended to be created quickly. It took me 2 episodes of The Office (the one when Micheal meets Jim in the conference and the previous one to that) to put it in place. 
+Perhaps it is not my finest piece of computer code, as this is DIY project intended to be created quickly. It took me 2 episodes of The Office (the one when Micheal meets Jim on the conference and the previous one to that) to put it in place. 
 
 ### Features
 
@@ -93,13 +93,13 @@ Perhaps it is not my finest piece of computer code, as this is DIY project inten
 - Utilizing RTC of the microcontroller
 - Online time synchronization over HTTP call over WIFI
 
-### Agorithm
+### Algorithm
 
 We initialize the clock with numbers of pin used for `not_enabled_pin`, `step_pin` and `led_pin`.
 
 - When the clock starts it reads last known position of the hands (as minutes from 12:00) from the `configuration.json` file
 - Before the first time display, and then every hour, it calls HTTP service for the current time to set up the internal RTC. This first switches the indicator LED off. If the time sycnrhonization was successfull it will turn the LED on again. Therefor LED bascially shows the status of last time synchronization.
-- Next it sets the display time to the current time in a loop, with sleep function scheduling next tick to beginning of the next minute (somewhere around 1 second of the each minute, I dont have OCD, good enough)
+- Next it sets the display time to the current time in a loop, with sleep function scheduling next tick to beginning of the next minute (somewhere around 1 second of the each minute, I dont have OCD, good enough, its acurate, not precise)
 - When it displays a time it performs `minute_ticks` in a loop until `current_display_time == target_display_time`
 - Each tick: we enable the stepper motor driver, then we do 2 iterations of switching the `STEP` of the motor driver `on` -> `off`, effectively making 2 steps (as above, it makes a switch of polarization for each minute). Finally we disable the stepper motor, just to avoid unnecessairy heating of the room.
 - At each tick the new `current_display_time` value is being saved persistently in `configuration.json` file
