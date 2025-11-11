@@ -12,7 +12,7 @@ The clock mechanism is a very simple two steps stepping motor with escapement to
 
 ![Alternating current on coil leads](docs/alternating.png)
 
-In days of youre this alternating current would be produced by a master clock, mechanicaly switching the current circuite.
+In days of youre this alternating current would be produced by a master clock, mechanicaly switching the current circuit.
 
 ## Driver
 
@@ -28,7 +28,7 @@ And then in the operating state it would switch between the bolow states:
 
 ![H_bridge_operating](docs/H_bridge_operating.svg)
 
-(The bictures after wikipedia (attribution to Cyril BUTTAY), read more on [Wikipedia](https://en.wikipedia.org/wiki/H-bridge))
+(The pictures after wikipedia (attribution to Cyril BUTTAY), read more on [Wikipedia](https://en.wikipedia.org/wiki/H-bridge))
 
 Problem with real world electronic H-bridges is that they are simple in theory. Theoretically you can achieve that circuit with just 4 transistors (google it). And if you can go with NPN / PNP transistors, that is almost it. But then when you go higher voltages or, especially, higher currents you probably gonna end up with MOSFET n-/p-channels and will realize you also need a considerably good charge pump to bump up the voltage above the threashold level. Also please imagine what would happen if you would turn to many switches on the pictures above ON in the same time. It basically leads to shorting a transistor, and they do actully turn red for a second before exploding. Lets just say those circuits tends to get quite complicated.
 
