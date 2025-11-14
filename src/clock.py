@@ -50,9 +50,9 @@ class Clock:
             datetime_tuple = (year, month, day, day_of_week, hour, minute, second, microsecond)
             self.rtc.datetime(datetime_tuple)
             print('Time synchronization success.')
+            self.pin_led.off()
         except Exception:
             print('Time synchronization fail.')
-        self.pin_led.off()
         
 
     def store_configuration(self):
